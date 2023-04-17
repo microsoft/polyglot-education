@@ -29,8 +29,5 @@
     
         }
       }
-    },
-  
-    // Uncomment if you want to connect other than 'root'. More info: https://aka.ms/vscode-remote/containers/non-root.
-    "remoteUser": "vscode"
+    }
   }
