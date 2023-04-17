@@ -10,7 +10,8 @@ Console.WriteLine("Hello Diego");
 
 ```mermaid
 sequenceDiagram
-  A-->B: Works!
+ Controller-->Service: AddUser(user)
+ Service-->Repository: CreateUser(userDTO) 
 ```
 
 above is my diagram
