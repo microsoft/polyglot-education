@@ -1,0 +1,16 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"languageName":"csharp","name":"csharp"}]}}
+
+#!csharp
+
+Console.WriteLine("Hello Diego");
+
+#!markdown
+
+```mermaid
+sequenceDiagram
+  A-->B: Works!
+```
+
+above is my diagram
