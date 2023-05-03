@@ -1,0 +1,19 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"javascript","items":[{"aliases":[],"languageName":"javascript","name":"javascript"}]}}
+
+#!markdown
+
+Displaying HTML
+
+#!html
+
+<b style="color:red">Hello!</b>
+
+#!markdown
+
+Displaying JavaScript
+
+#!javascript
+
+console.log("hello world");

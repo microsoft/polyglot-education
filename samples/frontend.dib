@@ -1,0 +1,30 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"languageName":"csharp","name":"csharp"}]}}
+
+#!markdown
+
+## Using helpers
+
+#!csharp
+
+using static Microsoft.DotNet.Interactive.Formatting.PocketViewTags;
+using Microsoft.DotNet.Interactive.Formatting;
+
+#!csharp
+
+var page = @"
+  <head>
+    <style>
+        body {
+            background-color: #282c34;
+            color: green;
+        }
+    </style>
+  </head>
+  <body>
+   my text 
+  </body>
+";
+
+display(HTML(page));
