@@ -1,0 +1,97 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"},{"aliases":[],"languageName":"T-SQL","name":"sql-adventureworks"}]}}
+
+#!markdown
+
+## Presteps
+
+- Download SQL Server management studio
+- Download a backup of AdventureWorks database
+- Restore database backup using SQL Server Management Studio
+
+OR
+
+- Provision an Azure SQL Server instance (Azure Portal or az cli)
+- Copy Connection String (Azure Portal)
+- Allow your local IP in the firewall (Azure Portal)
+
+#!markdown
+
+You will need this NuGet package below to be able to connect to the database
+
+#!csharp
+
+#r "nuget:Microsoft.DotNet.Interactive.SqlServer,*-*"
+
+#!markdown
+
+Create a connection to your database, the row below will create a magic command like so `!#sql-<kernel name>` that you will need to use in all future SQL queries.
+
+#!csharp
+
+#!connect mssql --kernel-name adventureworks "Server=localhost;Database=AdventureWorks2022;Trusted_Connection=True; TrustServerCertificate=True;"
+
+#!markdown
+
+Select the top 3 rows from table `Person.Person`    
+
+#!sql
+
+#!sql-adventureworks
+SELECT TOP 3 * from Person.Person;
+
+#!markdown
+
+Use the `WHERE` clause to limit what rows are returned, in the last case where `LastName = 'Smith'`
+
+#!sql
+
+#!sql-adventureworks
+SELECT TOP 3 * FROM Person.Person WHERE LastName = 'Smith';
+
+#!markdown
+
+TODO
+group by
+insert
+create table
+
+#!markdown
+
+```mermaid
+---
+title: Order example
+---
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE-ITEM : contains
+    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
+```
+
+#!markdown
+
+# Connect to a SQL Database using C# code
+
+- Download SQL Client Nuget
+- Create a connection object and open the connection
+
+#!csharp
+
+#r "nuget: Microsoft.Data.SqlClient, *-*"
+
+#!csharp
+
+// import the System.Data.SqlClient namespace
+using Microsoft.Data.SqlClient;
+
+
+// connect to sql server
+string connectionString = "Server=localhost;Database=AdventureWorks2022;Trusted_Connection=True; TrustServerCertificate=True;";
+using (SqlConnection connection = new SqlConnection(connectionString))
+{
+    connection.Open();
+    Console.WriteLine("Connected successfully.");
+}
+
+// 

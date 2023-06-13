@@ -1,0 +1,39 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+## Teach the C# programming language
+
+C# programming language is used by millions of developers. Here's how you can teach the basics.
+
+Variables:
+
+```csharp
+var name = "chris";
+var age = 30;
+var saveFile = false;
+```
+
+#!csharp
+
+// run code
+
+var name = "chris";
+var age = 30;
+var saveFile = false;
+
+#!markdown
+
+To print the variables, you can use `Console.WriteLine()`. To print for example `name`, you can type like so:
+
+```csharp
+Console.WriteLine("My name is {0}", name);
+```
+
+#!csharp
+
+var name = "chris";
+
+Console.WriteLine("My name is {0}", name);

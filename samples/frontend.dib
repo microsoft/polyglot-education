@@ -4,7 +4,7 @@
 
 #!markdown
 
-## Using helpers
+Displaying HTML using C# helpers
 
 #!csharp
 
@@ -28,3 +28,16 @@ var page = @"
 ";
 
 display(HTML(page));
+
+#!markdown
+
+Display HTML using HTML kernel
+
+#!html
+
+<script>
+    let test = "hello"
+    document.getElementById("test").innerHTML = test;
+</script>
+
+<div id ="test" style="color:red"></div>

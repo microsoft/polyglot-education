@@ -1,43 +1,10 @@
 #!meta
 
-{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"languageName":"csharp","name":"csharp"}]}}
-
-#!markdown
-
-In this Notebook, we will demo how you can teach APIs:
-
-- Set up server endpoint
-- Call server endpoint
-
-#!csharp
-
-#r "nuget: xunit, 2.4.1"
-
-#!markdown
-
-## Create and run API
-
-To create an API, we need to pull in the `AspNetCore` library from NuGet, setup the routes and then invoke the endpoint. 
-
-#!markdown
-
-Below are how you setup an endpoint for minimal API. You need the following parts:
-
-1. Download NuGet package `AspNetCore`
-1. Setup a route via method `MapGet()`
-1. Invoke the route using `HttpClient`
-
-#!markdown
-
--1- Download the NuGet package
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
 
 #!csharp
 
 #r "nuget: Microsoft.Dotnet.Interactive.AspNetCore, *-*"
-
-#!markdown
-
--2- Setup the route
 
 #!csharp
 
@@ -48,10 +15,43 @@ Endpoints.MapGet("/", async context =>
     await context.Response.WriteAsync("Hello World!");
 });
 
-#!markdown
-
--3- Invoke the route and inspect the results
-
 #!csharp
 
 await HttpClient.GetAsync("/")
+
+#!csharp
+
+var res = await HttpClient.GetAsync("/");
+var body = await res.Content.ReadAsStringAsync();
+body
+
+#!csharp
+
+using static Microsoft.DotNet.Interactive.Formatting.PocketViewTags;
+using Microsoft.DotNet.Interactive.Formatting;
+
+#!csharp
+
+display(HTML($"<b>{body}</b>"));
+
+#!markdown
+
+calling an external API from code
+
+#!html
+
+<script>
+// set target to loading...
+document.getElementById("target").innerHTML = "loading...";
+fetch('https://swapi.dev/api/planets/')
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+    document.getElementById("target").innerHTML = data.results[0].name;
+});
+
+</script>
+
+<div id="target">
+replace me
+</div>

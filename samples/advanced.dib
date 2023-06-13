@@ -6,6 +6,12 @@
 
 Displaying HTML
 
+#!markdown
+
+## Advanced topics
+
+- https://github.com/dotnet/interactive/blob/main/samples/notebooks/csharp/Docs/HTML.ipynb
+
 #!html
 
 <b style="color:red">Hello!</b>
@@ -14,6 +20,91 @@ Displaying HTML
 
 Displaying JavaScript
 
+#!markdown
+
+## Storing and sharing values
+
+TODO https://github.com/dotnet/interactive/blob/main/docs/variable-sharing.md
+
+#!markdown
+
+Sharing values with `#!set` using C#
+
+#!csharp
+
+var name = "chris";
+name
+
+#!csharp
+
+#!set --value @csharp:name --name name2
+
+Console.WriteLine($"Hello {name2}");
+
+#!markdown
+
+Sharing values with `#!set` using JavaScript
+
 #!javascript
 
-console.log("hello world");
+jsname = "chris";
+jsname
+
+#!javascript
+
+#!set --value @javascript:jsname --name jsname2
+
+console.log("Hello", jsname2);
+
+#!markdown
+
+Sharing variables in JavaScript with `#!value`
+
+#!javascript
+
+#!value --name foo2
+
+"bar"
+
+#!javascript
+
+#!share foo2 --from value
+
+console.log(foo2);
+
+#!markdown
+
+Creating and sharing JSON values
+
+#!value
+
+#!value --name someJson
+
+{
+    "name" : "John"
+}
+
+#!javascript
+
+#!share someJson --from value
+let obj = JSON.parse(someJson);
+console.log(obj.name);
+
+#!markdown
+
+Parsing and displaying JSON values in C#
+
+#!csharp
+
+#!share someJson --from value
+
+using Newtonsoft.Json.Linq;
+var jObject = JObject.Parse(someJson);
+
+Console.WriteLine(jObject.ToString());
+
+#!markdown
+
+## Learn more
+
+- https://github.com/dotnet/interactive/blob/main/samples/notebooks/csharp/Docs/HTML.ipynb

@@ -1,0 +1,66 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+Shows how to connect to a database using ADO .NET
+
+#!csharp
+
+#r "nuget: Microsoft.Data.Sqlite, *-*"
+
+#!csharp
+
+class Product {
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+#!csharp
+
+using Microsoft.Data.Sqlite;
+
+var connection = new SqliteConnection("Data Source=sample.db");
+connection.Open();
+
+var command = connection.CreateCommand();
+command.CommandText = @"
+    CREATE TABLE IF NOT EXISTS Products (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        Name TEXT NOT NULL
+    );
+
+    INSERT INTO Products (Name) VALUES ('Product 1');
+    INSERT INTO Products (Name) VALUES ('Product 2');
+";
+
+command.ExecuteNonQuery();
+
+connection.Close();
+
+#!csharp
+
+var connection = new SqliteConnection("Data Source=sample.db");
+connection.Open();
+
+var selectCommand = connection.CreateCommand();
+selectCommand.CommandText = "SELECT * FROM Products";
+var reader = selectCommand.ExecuteReader();
+var products = new List<Product>();
+while (reader.Read())
+{
+    products.Add(new Product
+    {
+        Id = reader.GetInt32(0),
+        Name = reader.GetString(1)
+    });
+}
+
+reader.Close();
+
+products
+
+#!markdown
+
+TODO add mermaid diagrams for ER
