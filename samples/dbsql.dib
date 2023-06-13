@@ -6,9 +6,9 @@
 
 ## Presteps
 
-- Download SQL Server management studio
-- Download a backup of AdventureWorks database
-- Restore database backup using SQL Server Management Studio
+- **Download SQL Server management studio** <https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16>
+- **Download a backup** of AdventureWorks database, <https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver16&tabs=ssms>
+- **Restore database** backup using SQL Server Management Studio, righ-click "databases", select "restore" and find your follow and complete dialog.
 
 OR
 
@@ -36,7 +36,7 @@ Create a connection to your database, the row below will create a magic command 
 
 Select the top 3 rows from table `Person.Person`    
 
-#!sql
+#!sql-adventureworks
 
 #!sql-adventureworks
 SELECT TOP 3 * from Person.Person;
@@ -45,24 +45,121 @@ SELECT TOP 3 * from Person.Person;
 
 Use the `WHERE` clause to limit what rows are returned, in the last case where `LastName = 'Smith'`
 
-#!sql
+#!sql-adventureworks
 
 #!sql-adventureworks
 SELECT TOP 3 * FROM Person.Person WHERE LastName = 'Smith';
 
 #!markdown
 
-TODO
-group by
-insert
-create table
+## Group by
+
+Using group by to show how many share the same last name
+
+#!sql-adventureworks
+
+#!sql-adventureworks
+SELECT top 5 COUNT(*) as Total, LastName FROM Person.Person GROUP BY LastName order by Total desc;
+-- the top 5 most common lastname in the database
+
+#!sql-adventureworks
+
+#!sql-adventureworks
+SELECT TOP (5)
+	  count(*) as Total,
+      P.[Name]   
+  FROM [Production].[WorkOrder] wo
+  inner join Production.Product P 
+	on P.ProductID = wo.ProductID 
+  group by wo.ProductID, P.Name
+  order by Total DESC
+-- 5 most ordered products
+
+#!markdown
+
+## Insert
+
+The idea is to add more rows to a table using `INSERT`
+
+Common syntax 
+- `INSERT INTO <table> (col1, col2) VALUES(1,2)`
+- `INSERT INTO <table> (col1, col2) SELECT 1,2`
+
+#!csharp
+
+#!sql-adventureworks
+
+INSERT INTO Sales.Currency (CurrencyCode, Name, ModifiedDate) VALUES ('AAA', 'Test Currency', GETDATE());
+
+SELECT * FROM Sales.Currency WHERE CurrencyCode = 'AAA';
+
+#!markdown
+
+## Delete
+The idea is to delete rows using `DELETE`
+
+Common syntax
+
+`DELETE FROM <table> where <condition>`
+
+#!csharp
+
+#!sql-adventureworks
+DELETE FROM Sales.Currency WHERE CurrencyCode = 'AAA';
+SELECT * FROM Sales.Currency WHERE CurrencyCode = 'AAA';
+
+#!markdown
+
+## Create table
+
+you can create new tables using `CREATE TABLE <name>(<column, ..>)`
+
+Example syntax:
+
+`CREATE TABLE HEROES(id INT, name varchar(255))`
+
+#!sql
+
+#!sql-adventureworks
+
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Heroes') 
+CREATE TABLE Heroes(id int, name varchar(50), power varchar(50), age int);
+
+#!sql
+
+#!sql-adventureworks
+SELECT * FROM Heroes;
+
+#!sql
+
+#!sql-adventureworks
+
+INSERT INTO Heroes VALUES (1, 'Superman', 'Flying', 30);
+INSERT INTO Heroes VALUES (2, 'Batman', 'Rich', 40);
+
+SELECT * FROM Heroes;
+
+#!markdown
+
+## DROP
+remove table and their data (dangerous, make sure you're sure)
+
+#!csharp
+
+#!sql-adventureworks
+DROP TABLE Heroes;
+-- SELECT * FROM Heroes;
+
+#!markdown
+
+# Diagrams with Mermaid
+
+https://mermaid.js.org/config/Tutorials.html
 
 #!markdown
 
 ```mermaid
----
-title: Order example
----
+
 erDiagram
     CUSTOMER ||--o{ ORDER : places
     ORDER ||--|{ LINE-ITEM : contains
@@ -88,10 +185,27 @@ using Microsoft.Data.SqlClient;
 
 // connect to sql server
 string connectionString = "Server=localhost;Database=AdventureWorks2022;Trusted_Connection=True; TrustServerCertificate=True;";
+
+// select data from sql server
+string queryString = "SELECT TOP 3 FirstName, * FROM Person.Person WHERE LastName = 'Smith';";
+
+// create command and run it
 using (SqlConnection connection = new SqlConnection(connectionString))
 {
+    SqlCommand command = new SqlCommand(queryString, connection);
     connection.Open();
-    Console.WriteLine("Connected successfully.");
+    SqlDataReader reader = command.ExecuteReader();
+    try
+    {
+        while (reader.Read())
+        {
+            Console.WriteLine(String.Format("{0}, {1}",
+                reader[0], reader[1]));
+        }
+    }
+    finally
+    {
+        // Always call Close when done reading.
+        reader.Close();
+    }
 }
-
-// 
